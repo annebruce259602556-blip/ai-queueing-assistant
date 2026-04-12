@@ -218,7 +218,6 @@
                 const result = await response.json();
                 document.getElementById('comfort-text').innerHTML = result.reply;
                 
-                // 这里的逻辑可以保留原来的本地判断逻辑（Section A）
                 const rideKey = document.getElementById('project').value;
                 const rideBaseData = rideData[rideKey]; 
                 document.getElementById('advice-text').innerHTML = `Wait time: ${rideBaseData.wait} mins.`;
