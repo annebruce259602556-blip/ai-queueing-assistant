@@ -97,7 +97,6 @@
         .tip-tag { background: #ffeaa7; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 5px; color: #333; }
         hr { border: 0; border-top: 1px dashed #ccc; margin: 15px 0; }
 
-        /* --- 修改部分 1: 确保 ID 匹配并启用换行 --- */
         #advice-text, #comfort-text {
             white-space: pre-wrap !important;
             line-height: 1.6;
@@ -161,7 +160,6 @@
     </div>
 
     <script>
-        // 1. Database (完全保留您的原始数据)
         const rideData = {
             soaring: {
                 name: "Soaring Over the Horizon",
@@ -210,7 +208,6 @@
                 
                 const result = await response.json();
                 
-                // --- 修改部分 2: 使用 .innerText 自动保留换行符 ---
                 document.getElementById('comfort-text').innerText = result.reply;
                 
                 const rideKey = document.getElementById('project').value;
