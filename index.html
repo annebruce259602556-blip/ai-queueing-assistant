@@ -198,35 +198,34 @@
             btnElement.classList.add('active');
         }
 
-        function generateAdvice() {
-            const rideKey = document.getElementById('project').value;
-            const weatherKey = document.getElementById('weather').value;
-            const ride = rideData[rideKey];
+        async function generateAdvice() {
+            const ride = document.getElementById('project').selectedOptions[0].text;
+            const weather = document.getElementById('weather').selectedOptions[0].text;
+            const mood = selectedEmotion;
 
             document.getElementById('output-area').style.display = 'block';
+            document.getElementById('comfort-text').innerText = "AI Buddy is typing...";
 
-            // Section A Logic
-            let decisionHtml = "";
-            if (ride.wait > 60) {
-                decisionHtml = `<strong>Current wait for ${ride.name} is ${ride.wait} mins.</strong><br>
-                                ⚠️ It's a bit crowded! Suggestion: Visit the <em>Gift Shop</em> or <em>Snack Bar</em> and return after 5 PM when the line usually drops.`;
-            } else {
-                decisionHtml = `<strong>Current wait is only ${ride.wait} mins.</strong><br>
-                                ✅ Great choice! This is a 'Green Light' time. Stay in line!`;
+            const userPrompt = `I am at ${ride}. Weather: ${weather}. Mood: ${mood}. Give me a fun fact and a mini-game.`;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: userPrompt })
+                });
+                
+                const result = await response.json();
+                document.getElementById('comfort-text').innerHTML = result.reply;
+                
+                // 这里的逻辑可以保留原来的本地判断逻辑（Section A）
+                const rideKey = document.getElementById('project').value;
+                const rideBaseData = rideData[rideKey]; 
+                document.getElementById('advice-text').innerHTML = `Wait time: ${rideBaseData.wait} mins.`;
+                
+            } catch (e) {
+                document.getElementById('comfort-text').innerText = "Connection lost. Please try again.";
             }
-            document.getElementById('advice-text').innerHTML = decisionHtml;
-
-            // Section B Logic
-            const comfortHtml = `
-                <p><strong>Pro-Tip:</strong> ${ride.proTip}</p>
-                <p><strong>Fun Fact:</strong> ${ride.trivia}</p>
-                <hr>
-                <p><span class="tip-tag">Task</span> ${moodTasks[selectedEmotion]}</p>
-                <p><small>${weatherTips[weatherKey]}</small></p>
-            `;
-            document.getElementById('comfort-text').innerHTML = comfortHtml;
-
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         function resetPage() {
