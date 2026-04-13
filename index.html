@@ -1,227 +1,477 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Queue Buddy - Your Theme Park Companion</title>
+
     <style>
+
         :root {
+
             --primary-color: #4a90e2;
+
             --bg-color: #f5f7fa;
+
             --card-bg: #ffffff;
+
             --text-main: #333;
+
         }
+
+
 
         body {
+
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
             background-color: var(--bg-color);
+
             margin: 0;
+
             padding: 20px;
+
             color: var(--text-main);
+
         }
+
+
 
         .header { text-align: center; margin-bottom: 25px; }
+
         .header h1 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 5px; }
+
         .header p { font-size: 0.9rem; color: #666; }
 
+
+
         .card {
+
             background: var(--card-bg);
+
             border-radius: 16px;
+
             padding: 20px;
+
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
             margin-bottom: 20px;
+
         }
 
+
+
         .input-group { margin-bottom: 15px; }
+
         label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #888; }
+
         
+
         select {
+
             width: 100%;
+
             padding: 12px;
+
             border: 1px solid #ddd;
+
             border-radius: 8px;
+
             font-size: 1rem;
+
             box-sizing: border-box;
+
             background-color: #fff;
+
         }
+
+
 
         .emotion-group { display: flex; justify-content: space-between; gap: 10px; }
 
+
+
         .emotion-btn {
+
             flex: 1;
+
             padding: 10px;
+
             border: 1px solid #eee;
+
             border-radius: 10px;
+
             background: #fff;
+
             cursor: pointer;
+
             font-size: 1.2rem;
+
             transition: all 0.2s;
+
         }
+
+
 
         .emotion-btn.active {
+
             background: #e1f0ff;
+
             border-color: var(--primary-color);
+
             transform: scale(1.05);
+
             box-shadow: 0 2px 8px rgba(74,144,226,0.3);
+
         }
 
+
+
         .btn-main {
+
             width: 100%;
+
             background: var(--primary-color);
+
             color: white;
+
             border: none;
+
             padding: 15px;
+
             border-radius: 12px;
+
             font-size: 1.1rem;
+
             font-weight: bold;
+
             margin-top: 10px;
+
             cursor: pointer;
+
         }
+
+
 
         #output-area { display: none; animation: slideUp 0.4s ease-out; }
 
+
+
         @keyframes slideUp {
+
             from { transform: translateY(20px); opacity: 0; }
+
             to { transform: translateY(0); opacity: 1; }
+
         }
+
+
 
         .ai-box {
+
             background: #f0f7ff;
+
             border-left: 4px solid var(--primary-color);
+
             padding: 15px;
+
             border-radius: 8px;
+
             margin-top: 15px;
+
         }
+
+
 
         .ai-title { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; display: block; font-size: 0.9rem; }
+
         .tip-tag { background: #ffeaa7; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 5px; color: #333; }
+
         hr { border: 0; border-top: 1px dashed #ccc; margin: 15px 0; }
 
-        #advice-text, #comfort-text {
-            white-space: pre-wrap !important;
-            line-height: 1.6;
+
+
+        #advice-content {
+
+            white-space: pre-wrap;
+
         }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="header">
+
         <h1>🌟 Queue Buddy</h1>
+
         <p>Beat the heat, skip the boredom!</p>
+
     </div>
+
+
 
     <div class="card">
+
         <div class="input-group">
+
             <label>📍 Where are you waiting?</label>
+
             <select id="project">
+
                 <option value="soaring">Soaring Over the Horizon</option>
+
                 <option value="pirates">Pirates of the Caribbean</option>
+
                 <option value="tron">TRON Lightcycle Power Run</option>
+
             </select>
+
         </div>
 
+
+
         <div class="input-group">
+
             <label>🌡️ How's the weather?</label>
+
             <select id="weather">
+
                 <option value="hot">🔥 Scorching Hot</option>
+
                 <option value="sunny">☀️ Sunny & Clear</option>
+
                 <option value="rain">🌧️ Raining</option>
+
             </select>
+
         </div>
 
+
+
         <div class="input-group">
+
             <label>😊 Current Mood?</label>
+
             <div class="emotion-group">
+
                 <button class="emotion-btn" onclick="updateEmotion('happy', this)">😊</button>
+
                 <button class="emotion-btn active" onclick="updateEmotion('bored', this)">😐</button>
+
                 <button class="emotion-btn" onclick="updateEmotion('angry', this)">😫</button>
+
             </div>
+
         </div>
+
+
 
         <button class="btn-main" onclick="generateAdvice()">Get My Advice</button>
+
     </div>
+
+
 
     <div id="output-area">
+
         <div class="card">
+
             <div class="ai-box">
+
                 <span class="ai-title">💡 SMART ADVICE (Decision Support)</span>
+
                 <p id="advice-text"></p>
+
             </div>
+
+
 
             <div class="ai-box" style="background: #fff9db; border-left-color: #f1c40f;">
+
                 <span class="ai-title">🍦 INSTANT COMFORT (Vibe Check)</span>
+
                 <div id="comfort-text"></div>
+
             </div>
+
+
 
             <div style="margin-top:15px; text-align: right;">
+
                 <button class="emotion-btn" style="font-size: 0.8rem; width: auto; padding: 5px 15px;" onclick="resetPage()">Reset</button>
+
             </div>
+
         </div>
+
     </div>
 
+
+
     <script>
+
+        // 1. Database
+
         const rideData = {
+
             soaring: {
+
                 name: "Soaring Over the Horizon",
+
                 wait: 85,
+
                 proTip: "The best seats are in the center of Row 1 for the least distortion!",
+
                 trivia: "The scent you smell during the Africa scene is fresh grass and rosewood."
+
             },
+
             pirates: {
+
                 name: "Pirates of the Caribbean",
+
                 wait: 40,
+
                 proTip: "This line moves fast because the boats hold 30 people each. Stay in it!",
+
                 trivia: "Look for the two skeletons playing chess—it's a stalemate that lasts forever."
+
             },
+
             tron: {
+
                 name: "TRON Lightcycle Power Run",
+
                 wait: 110,
+
                 proTip: "Wait for the front row if you want the full 'Grid' experience. It's worth it.",
+
                 trivia: "The canopy above you is called the 'Grid' and features over 1,000 blue LED lights."
+
             }
+
         };
+
+
+
+        const weatherTips = {
+
+            hot: "☀️ ICE WATER ALERT: The nearest refreshment stand is just 200m to your left. Stay hydrated!",
+
+            sunny: "🕶️ SUN PROTECTION: You'll be entering the indoor shaded area in about 15 minutes.",
+
+            rain: "🌧️ RAIN CHECK: This ride is indoors, so it's the perfect place to stay dry right now!"
+
+        };
+
+
+
+        const moodTasks = {
+
+            happy: "Love the energy! Take a selfie with the ride entrance and tag the park! 📸",
+
+            bored: "Challenge: Try to count how many people in line are wearing Mickey ears. I bet it's more than 10!",
+
+            angry: "Deep breaths. 🧘 Moving your toes inside your shoes helps blood flow and reduces stress while standing."
+
+        };
+
+
 
         let selectedEmotion = 'bored';
 
+
+
+        // 2. Interaction Handlers
+
         function updateEmotion(emotion, btnElement) {
+
             selectedEmotion = emotion;
+
             document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('active'));
+
             btnElement.classList.add('active');
+
         }
 
+
+
         async function generateAdvice() {
+
             const ride = document.getElementById('project').selectedOptions[0].text;
+
             const weather = document.getElementById('weather').selectedOptions[0].text;
+
             const mood = selectedEmotion;
 
+
+
             document.getElementById('output-area').style.display = 'block';
+
             document.getElementById('comfort-text').innerText = "AI Buddy is typing...";
+
+
 
             const userPrompt = `I am at ${ride}. Weather: ${weather}. Mood: ${mood}. Give me a fun fact and a mini-game.`;
 
+
+
             try {
+
                 const response = await fetch('/api/chat', {
+
                     method: 'POST',
+
                     headers: { 'Content-Type': 'application/json' },
+
                     body: JSON.stringify({ prompt: userPrompt })
+
                 });
+
                 
+
                 const result = await response.json();
+
+                document.getElementById('comfort-text').innerHTML = result.reply;
+
                 
-                document.getElementById('comfort-text').innerText = result.reply;
-                
+
                 const rideKey = document.getElementById('project').value;
+
                 const rideBaseData = rideData[rideKey]; 
-                document.getElementById('advice-text').innerText = `Wait time: ${rideBaseData.wait} mins.`;
+
+                document.getElementById('advice-text').innerHTML = `Wait time: ${rideBaseData.wait} mins.`;
+
                 
+
             } catch (e) {
+
                 document.getElementById('comfort-text').innerText = "Connection lost. Please try again.";
+
             }
+
         }
 
+
+
         function resetPage() {
+
             location.reload();
+
         }
+
     </script>
+
 </body>
+
 </html>
